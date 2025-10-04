@@ -30,16 +30,9 @@ app.get('/api/health', (req, res) => {
   })
 })
 
-// 默认路由
+// 默认路由 - 显示正在开发中页面
 app.get('/', (req, res) => {
-  res.json({
-    message: 'PeaceStar API 服务器',
-    status: 'developing',
-    endpoints: {
-      status: '/api/status',
-      health: '/api/health'
-    }
-  })
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
 // 404处理

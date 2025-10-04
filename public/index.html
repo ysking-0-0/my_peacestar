@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeaceStar - 正在开发中</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 80px 60px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        
+        .icon {
+            margin-bottom: 40px;
+        }
+        
+        .icon-text {
+            font-size: 120px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            font-size: 32px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .description {
+            font-size: 28px;
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 60px;
+        }
+        
+        .progress {
+            margin-top: 40px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: 24px;
+            color: #666;
+        }
+        
+        .status-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .status-text {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+            
+            .icon-text {
+                font-size: 80px;
+            }
+            
+            .title {
+                font-size: 36px;
+            }
+            
+            .subtitle {
+                font-size: 24px;
+            }
+            
+            .description {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <span class="icon-text">🚧</span>
+        </div>
+        <div class="title">正在开发中</div>
+        <div class="subtitle">敬请期待</div>
+        <div class="description">
+            我们正在努力开发中，很快就能为您提供更好的服务！
+        </div>
+        <div class="progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+        <div class="status-info">
+            <div class="status-text" id="statusText">正在连接服务器...</div>
+        </div>
+    </div>
+
+    <script>
+        // 进度条动画
+        let progress = 0;
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const statusText = document.getElementById('statusText');
+        
+        function updateProgress() {
+            if (progress < 75) {
+                progress += Math.random() * 3;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+            }
+        }
+        
+        // 检查服务器状态
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                statusText.textContent = `服务器状态: ${data.message} (${data.progress}%)`;
+                progress = data.progress;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+            } catch (error) {
+                statusText.textContent = '服务器连接失败，请确保后端服务已启动';
+                console.log('服务器连接失败:', error);
+            }
+        }
+        
+        // 启动进度动画
+        const timer = setInterval(updateProgress, 200);
+        
+        // 检查服务器状态
+        setTimeout(checkServerStatus, 1000);
+        
+        // 5秒后停止进度动画
+        setTimeout(() => {
+            clearInterval(timer);
+        }, 5000);
+    </script>
+</body>
+</html>
