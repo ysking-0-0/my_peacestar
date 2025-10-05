@@ -52,9 +52,10 @@ app.use((err, req, res, next) => {
   })
 })
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 PeaceStar 服务器启动成功！`)
-  console.log(`📍 服务地址: http://localhost:${PORT}`)
-  console.log(`🔧 状态接口: http://localhost:${PORT}/api/status`)
-  console.log(`💚 健康检查: http://localhost:${PORT}/api/health`)
+  console.log(`📍 服务地址: http://peacestar.top`)
+  console.log(`🔧 状态接口: http://peacestar.top/api/status`)
+  console.log(`💚 健康检查: http://peacestar.top/api/health`)
+  console.log(`🌐 监听地址: 0.0.0.0:${PORT}`)
 })
